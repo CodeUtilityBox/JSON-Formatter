@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     copyBtn.addEventListener('click', copyJson);
 
 
-    function formatJson() {
+    async function formatJson() {
         try {
             originalJson = input.value;
             const jsonObj = JSON.parse(originalJson);
@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (e) {
             // Show error but keep the raw input visible
             formattedJson = '';
-            showError(e);
+           await  showPreciseJsonError(originalJson, e)
+          // showError(e)
             input.classList.remove('hidden');
             output.classList.add('hidden');
         }
@@ -155,6 +156,72 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
+    }
+
+    function showPreciseJsonError(originalJson, error) {
+        // Reset error displays
+        errorMessage.innerHTML = '';
+        errorLineDisplay.innerHTML = '';
+        errorContext.innerHTML = '';
+    
+        // Parse error details
+        const errorDetails = {
+            message: error.message,
+            line: 1,
+            column: 1,
+            position: 0
+        };
+    
+        // Extract line and column information
+        const lineColumnMatch = error.message.match(/line (\d+) column (\d+)/);
+        const positionMatch = error.message.match(/at position (\d+)/);
+    
+        if (lineColumnMatch) {
+            errorDetails.line = parseInt(lineColumnMatch[1]);
+            errorDetails.column = parseInt(lineColumnMatch[2]);
+        }
+    
+        if (positionMatch) {
+            errorDetails.position = parseInt(positionMatch[1]);
+        }
+    
+        // Split JSON into lines
+        const jsonLines = originalJson.split('\n');
+        const problemLine = jsonLines[errorDetails.line - 1] || '';
+    
+        // Create visual error pointer
+        const errorPointer = ' '.repeat(errorDetails.column - 1) + '^';
+    
+        // Construct detailed error message
+        const fullErrorMessage = `
+
+    JSON Syntax Error
+    ----------------------------------------------------------------
+    Location: Line ${errorDetails.line}, Column ${errorDetails.column}
+    
+    Problematic Line:
+    ${problemLine}
+    ${errorPointer}
+    
+    Detailed Error: ${error.message}
+    
+    Possible Causes:
+    1. Missing or extra comma
+    2. Unquoted key
+    3. Incorrect bracket/brace placement
+    4. Trailing comma
+    5. Unescaped special characters
+        `;
+    
+        // Display error in UI
+        errorMessage.innerHTML = `
+            <div class="error" style="color: black;">
+                <pre>${fullErrorMessage}</pre>
+            </div>
+        `;
+    
+        errorMessage.classList.remove('hidden');
+       // showToast('Invalid JSON Syntax', 'error', 4000);
     }
 
     function toggleRaw() {
@@ -475,3 +542,5 @@ function hideToast(toast) {
     }, 400);
 }
 });
+
+
