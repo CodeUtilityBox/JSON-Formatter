@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (e) {
             // Show error but keep the raw input visible
             formattedJson = '';
-           await  showPreciseJsonError(originalJson, e)
-          // showError(e)
+          // await  showPreciseJsonError(originalJson, e)
+          showError(e)
             input.classList.remove('hidden');
             output.classList.add('hidden');
         }
@@ -71,11 +71,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Build the context display
             errorContext.innerHTML = `
-                <div>Error context (position ${errorPos}):</div>
-                <div>${beforeHighlight}<span class="error-pointer">${highlightChar}</span>${afterHighlight}</div>
-                <div>${' '.repeat(beforeHighlight.length)}<span class="error-pointer"></span></div>
+                <div>Error area --> ${beforeHighlight}<span class="error-pointer">${highlightChar}</span>${afterHighlight}</div>
+
+                <div style="color: green;">Detailed Error: ${error.message} 
+
+                Possible Causes:
+                1. Missing or extra comma
+                2. Unquoted key
+                3. Incorrect bracket/brace placement
+                4. Trailing comma
+                5. Unescaped special characters </div>
             `;
             errorContext.classList.remove('hidden');
+
+
 
             // Also show line-based error if available
             const lineColMatch = error.message.match(/line (\d+) column (\d+)/);
@@ -86,15 +95,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 const errorLineText = lines[errorLine] || '';
                 const errorIndicator = ' '.repeat(errorCol);
 
-                errorLineDisplay.innerHTML = `
-                    <div class="error-line">${escapeHtml(errorLineText)}</div>
-                    <div class="error-arrow">${errorIndicator}</div>
-                `;
-                errorLineDisplay.classList.remove('hidden');
+                // errorLineDisplay.innerHTML = `
+                //     <div class="error-line">${escapeHtml(errorLineText)}</div>
+                   
+                // `;
+                // errorLineDisplay.classList.remove('hidden');
             }
 
-            errorMessage.textContent = `Error: ${error.message}`;
-            errorMessage.classList.remove('hidden');
+            // errorMessage.textContent = `Error: ${error.message}`;
+            // errorMessage.classList.remove('hidden');
 
         } catch (e) {
             // Fallback error display
