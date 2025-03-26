@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function () {
             originalJson : formattedJson;
 
         navigator.clipboard.writeText(textToCopy)
-            .then(() => showToast('Formated JSON Copied to clipboard!', 'success'))
+            .then(() => showToast('Above text Copied to clipboard!', 'success'))
             .catch(() => showToast('Failed to copy Json', 'error'));
     }
 
