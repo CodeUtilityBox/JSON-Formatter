@@ -16,6 +16,7 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 h1 {
     color: #333;
     /* text-align: center; */
@@ -72,17 +73,16 @@ textarea, #output {
 .number { color: #ff8c00; }
 .boolean { color: #0000ff; }
 .null { color: #808080; }
+
 .error {
     background-color: #ffdddd;
     color: #ff0000;
-    font-weight: bold;
     border-bottom: 2px solid #ff0000;
 }
 .error-message {
     color: #ff0000;
     padding: 5px;
     margin-top: 5px;
-    font-weight: bold;
     white-space: normal;
 }
 .error-line {
@@ -96,7 +96,6 @@ textarea, #output {
 }
 .error-arrow {
     color: #ff0000;
-    font-weight: bold;
     padding-left: 10px;
 }
 .error-context {
@@ -110,7 +109,7 @@ textarea, #output {
 }
 .error-pointer {
     color: #ff0000;
-    font-weight: bold;
+
     background-color: #ffdddd;
 }
 
@@ -528,19 +527,24 @@ button:active {
 
 .collapsible {
     cursor: pointer;
-    /* color: #666; */
+    color: #666;
     margin-right: 5px;
+    margin-left: 2px;
     font-size: 14px;
-    padding: 4px 8px;
-    /* background: #f0f0f0; */
+    padding: 0px 4px;
+    background: #eae8e8;
     border-radius: 3px;
     /* border: 1px solid #ddd; */
     user-select: none;
     transition: all 0.2s ease;
+    user-select: none; /* Standard property */
+    -webkit-user-select: none; /* Safari, Chrome, Opera */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer/Edge (older) */
 }
 
 .collapsible:hover {
-    background: #efeeee;
+    background: #c7c6c6;
     /* border-color: #ccc; */
 }
 
@@ -573,6 +577,11 @@ button:active {
     cursor: pointer;
     font-size: 12px;
     user-select: none;
+      /* --- ADD THIS LINE --- */
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
 }
 
 .collapse-control:hover {
@@ -605,3 +614,5 @@ button:active {
     position: relative;
     padding-left: 10px;
 }
+
+
